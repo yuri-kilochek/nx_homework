@@ -20,8 +20,8 @@ if(BUILD_SHARED_LIBS)
         C_VISIBILITY_PRESET hidden
     )
     target_compile_definitions(hasher
-        PRIVATE NX_HOMEWORK_EXPORT
-        INTERFACE NX_HOMEWORK_IMPORT
+        PRIVATE NX_HOMEWORK_HASHER_EXPORT
+        INTERFACE NX_HOMEWORK_HASHER_IMPORT
     )
 endif()
 
