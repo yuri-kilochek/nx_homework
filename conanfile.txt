@@ -3,5 +3,7 @@ boost/1.71.0@conan/stable
 nettle/3.4.1@bincrafters/stable
 
 [generators]
-cmake_paths
-cmake_find_package
+cmake
+
+[options]
+*:shared=False
