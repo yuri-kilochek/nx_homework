@@ -12,6 +12,7 @@ target_include_directories(hasher_microservice PRIVATE
 )
 
 target_sources(hasher_microservice PRIVATE
+    src/server.cpp
     src/main.cpp
 )
 
