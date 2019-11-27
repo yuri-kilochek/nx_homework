@@ -12,7 +12,7 @@
 namespace nx::homework::hasher::microservice {
 ///////////////////////////////////////////////////////////////////////////////
 
-int main(int argc, char* argv[]) {
+int main(int argc, char** argv) {
     auto concurrency = std::thread::hardware_concurrency();
 
     boost::asio::io_context io_context(concurrency);
@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
     std::optional<server> server(std::in_place, io_context, 9009);
 
     boost::asio::signal_set signal_set(io_context, SIGINT, SIGTERM);
-    signal_set.async_wait([&](auto ec, auto signal){
+    signal_set.async_wait([&](auto ec, auto signal) {
         if (ec == boost::asio::error::operation_aborted) { return; }
         if (!ec) {
             throw boost::system::system_error(ec,

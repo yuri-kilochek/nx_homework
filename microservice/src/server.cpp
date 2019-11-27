@@ -1,10 +1,15 @@
 #include <nx/homework/hasher/microservice/server.hpp>
+#include <nx/homework/hasher/microservice/session.hpp>
 
+#include <boost/system/system_error.hpp>
 #include <boost/asio/strand.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ip/v6_only.hpp>
 #include <boost/asio/bind_executor.hpp>
 #include <boost/asio/dispatch.hpp>
+
+#include <list>
+#include <iterator>
 
 namespace nx::homework::hasher::microservice {
 ///////////////////////////////////////////////////////////////////////////////
@@ -12,6 +17,7 @@ namespace nx::homework::hasher::microservice {
 struct server::impl {
     boost::asio::io_context::strand strand;
     boost::asio::ip::tcp::acceptor acceptor;
+    std::list<session> sessions;
 
     explicit
     impl(boost::asio::io_context& io_context, std::uint_least16_t port)
@@ -37,9 +43,21 @@ struct server::impl {
                     "boost::asio::ip::tcp::acceptor::async_accept");
             }
 
-            accept_next(std::move(self));
+            accept_next(self);
 
-            // ...
+            auto& session = sessions.emplace_back(std::move(socket));
+            session.async_wait(bind_executor(strand, [
+                this, self = std::move(self),
+                it = std::prev(sessions.end())
+            ](auto ec) {
+                if (ec == boost::asio::error::operation_aborted) { return; }
+                if (!ec) {
+                    throw boost::system::system_error(ec,
+                        "nx::homework::hasher::microservice::session::async_wait");
+                }
+
+                sessions.erase(it);
+            }));
         }));
     }
 
