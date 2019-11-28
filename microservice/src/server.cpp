@@ -3,6 +3,7 @@
 
 #include <boost/system/system_error.hpp>
 #include <boost/asio/strand.hpp>
+#include <boost/asio/executor.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ip/v6_only.hpp>
 #include <boost/asio/bind_executor.hpp>
@@ -15,13 +16,13 @@ namespace nx::homework::hasher::microservice {
 ///////////////////////////////////////////////////////////////////////////////
 
 struct server::impl {
-    boost::asio::io_context::strand strand;
+    boost::asio::strand<boost::asio::executor> strand;
     boost::asio::ip::tcp::acceptor acceptor;
     std::list<session> sessions;
 
     explicit
     impl(boost::asio::io_context& io_context, std::uint_least16_t port)
-    : strand(io_context)
+    : strand(io_context.get_executor())
     , acceptor(io_context)
     {
         auto protocol = boost::asio::ip::tcp::v6();
@@ -37,10 +38,7 @@ struct server::impl {
             this, self = std::move(self)
         ](auto ec, auto socket) mutable {
             if (ec == boost::asio::error::operation_aborted) { return; }
-            if (ec) {
-                throw boost::system::system_error(ec,
-                    "boost::asio::ip::tcp::acceptor::async_accept");
-            }
+            if (ec) { throw boost::system::system_error(ec); }
 
             accept_next(self);
 
@@ -50,8 +48,7 @@ struct server::impl {
                 it = std::prev(sessions.end())
             ](auto ec) {
                 if (ec && ec != boost::asio::error::operation_aborted) {
-                    throw boost::system::system_error(ec,
-                        "nx::homework::hasher::microservice::session::async_wait");
+                    throw boost::system::system_error(ec);
                 }
 
                 sessions.erase(it);
@@ -59,13 +56,11 @@ struct server::impl {
         }));
     }
 
-    void close(std::shared_ptr<impl> self) {
-        dispatch(strand, [this, self = std::move(self)]{
-            acceptor.close();
-            for (auto& session : sessions) {
-                session.terminate();
-            }
-        });
+    void terminate() {
+        acceptor.close();
+        for (auto& session : sessions) {
+            session.terminate();
+        }
     }
 };
 
@@ -78,7 +73,9 @@ server::~server() {
 }
 
 void server::terminate() {
-    impl_->close(impl_);
+    dispatch(impl_->strand, [impl_ = impl_]{
+        impl_->terminate();
+    });
 }
 
 ///////////////////////////////////////////////////////////////////////////////

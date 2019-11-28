@@ -21,10 +21,7 @@ int main(int argc, char** argv) {
     boost::asio::signal_set signal_set(io_context, SIGINT, SIGTERM);
     signal_set.async_wait([&](auto ec, auto signal) {
         if (ec == boost::asio::error::operation_aborted) { return; }
-        if (ec) {
-            throw boost::system::system_error(ec,
-                "boost::asio::signal_set::async_wait");
-        }
+        if (ec) { throw boost::system::system_error(ec); }
 
         server.terminate();
     });

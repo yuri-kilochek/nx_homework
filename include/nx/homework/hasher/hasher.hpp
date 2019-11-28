@@ -12,11 +12,12 @@ namespace nx::homework::hasher {
 
 struct NX_HOMEWORK_HASHER_API hasher {
     hasher();
+
     ~hasher();
 
-    void reset();
-    void append(void const* bytes, std::size_t byte_count);
-    void finish(std::vector<std::byte>& digest);
+    void append(void const* data, std::size_t size);
+
+    void finish(std::vector<char>& digest);
 
 private:
     struct impl;

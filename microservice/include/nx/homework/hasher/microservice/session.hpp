@@ -7,6 +7,7 @@
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/async_result.hpp>
 
+#include <utility>
 #include <memory>
 
 namespace nx::homework::hasher::microservice {

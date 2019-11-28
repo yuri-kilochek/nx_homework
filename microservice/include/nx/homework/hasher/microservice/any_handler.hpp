@@ -42,12 +42,17 @@ struct any_handler {
 
     any_handler() = default;
 
+    explicit
+    operator bool()
+    const noexcept
+    { return !!box_; }
+
     auto get_executor()
     const
     -> boost::asio::executor
-    { return box_->get_ececutor(); }
+    { return box_->get_executor(); }
 
-    void operator()(Args&&... args) {
+    void operator()(Args... args) {
         box_->invoke(std::forward<Args>(args)...);
     }
 

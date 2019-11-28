@@ -13,20 +13,15 @@ struct hasher::impl {
 
 hasher::hasher()
 : impl_(std::make_unique<impl>())
-{ reset(); }
+{ sha256_init(&impl_->ctx); }
 
 hasher::~hasher() = default;
 
-void hasher::reset() {
-    sha256_init(&impl_->ctx);
+void hasher::append(void const* data, std::size_t size) {
+    sha256_update(&impl_->ctx, size, static_cast<std::uint8_t const*>(data));
 }
 
-void hasher::append(void const* bytes, std::size_t byte_count) {
-    sha256_update(&impl_->ctx, byte_count,
-                               static_cast<std::uint8_t const*>(bytes));
-}
-
-void hasher::finish(std::vector<std::byte>& digest) {
+void hasher::finish(std::vector<char>& digest) {
     digest.resize(SHA256_DIGEST_SIZE);
     sha256_digest(&impl_->ctx, digest.size(),
                                reinterpret_cast<std::uint8_t*>(digest.data()));
