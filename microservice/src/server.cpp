@@ -24,12 +24,11 @@ struct server::impl {
     : strand(io_context)
     , acceptor(io_context)
     {
-        acceptor.set_option(boost::asio::socket_base::reuse_address(true));
-        acceptor.set_option(boost::asio::ip::v6_only(false));
-
         auto protocol = boost::asio::ip::tcp::v6();
-        boost::asio::ip::tcp::endpoint endpoint{protocol, port};
-        acceptor.bind(endpoint);
+        acceptor.open(protocol);
+        acceptor.set_option(boost::asio::socket_base::reuse_address{true});
+        acceptor.set_option(boost::asio::ip::v6_only{false});
+        acceptor.bind(boost::asio::ip::tcp::endpoint{protocol, port});
         acceptor.listen();
     }
 
@@ -38,7 +37,7 @@ struct server::impl {
             this, self = std::move(self)
         ](auto ec, auto socket) mutable {
             if (ec == boost::asio::error::operation_aborted) { return; }
-            if (!ec) {
+            if (ec) {
                 throw boost::system::system_error(ec,
                     "boost::asio::ip::tcp::acceptor::async_accept");
             }
@@ -50,8 +49,7 @@ struct server::impl {
                 this, self = std::move(self),
                 it = std::prev(sessions.end())
             ](auto ec) {
-                if (ec == boost::asio::error::operation_aborted) { return; }
-                if (!ec) {
+                if (ec && ec != boost::asio::error::operation_aborted) {
                     throw boost::system::system_error(ec,
                         "nx::homework::hasher::microservice::session::async_wait");
                 }
@@ -64,6 +62,9 @@ struct server::impl {
     void close(std::shared_ptr<impl> self) {
         dispatch(strand, [this, self = std::move(self)]{
             acceptor.close();
+            for (auto& session : sessions) {
+                session.terminate();
+            }
         });
     }
 };
@@ -73,6 +74,10 @@ server::server(boost::asio::io_context& io_context, std::uint_least16_t port)
 { impl_->accept_next(impl_); }
 
 server::~server() {
+    terminate();
+}
+
+void server::terminate() {
     impl_->close(impl_);
 }
 

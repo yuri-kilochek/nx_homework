@@ -12,6 +12,10 @@ session::session(boost::asio::ip::tcp::socket&& socket) {
 }
 
 session::~session() {
+    terminate();
+}
+
+void session::terminate() {
 
 }
 

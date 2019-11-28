@@ -16,7 +16,16 @@ struct session {
     explicit
     session(boost::asio::ip::tcp::socket&& socket);
 
+    session(session const&)
+    = delete;
+
+    auto operator=(session const&)
+    -> session&
+    = delete;
+
     ~session();
+
+    void terminate();
 
     template <typename CompletionToken>
     auto async_wait(CompletionToken&& token) {
