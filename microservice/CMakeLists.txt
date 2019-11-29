@@ -7,6 +7,10 @@ set_target_properties(hasher_microservice PROPERTIES
     INSTALL_RPATH "\$ORIGIN/../${CMAKE_INSTALL_LIBDIR}"
 )
 
+target_compile_definitions(hasher_microservice PRIVATE
+    "NX_HOMEWORK_HASHER_MICROSERVICE_VERSION_STRING=\"${PROJECT_VERSION}\""
+)
+
 target_include_directories(hasher_microservice PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
@@ -14,6 +18,7 @@ target_include_directories(hasher_microservice PRIVATE
 target_sources(hasher_microservice PRIVATE
     src/session.cpp
     src/server.cpp
+    src/options.cpp
     src/main.cpp
 )
 

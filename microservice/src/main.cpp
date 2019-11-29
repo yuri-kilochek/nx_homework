@@ -1,3 +1,4 @@
+#include <nx/homework/hasher/microservice/options.hpp>
 #include <nx/homework/hasher/microservice/server.hpp>
 
 #include <boost/asio/io_context.hpp>
@@ -12,11 +13,12 @@
 namespace nx::homework::hasher::microservice {
 ///////////////////////////////////////////////////////////////////////////////
 
-int main(int argc, char** argv) {
+int main(int argc, char const* const* argv) {
+    microservice::options options(argc, argv);
+
     boost::asio::io_context io_context;
 
-    std::uint_least16_t port = 9009;
-    microservice::server server(io_context, port);
+    microservice::server server(io_context, options.port);
 
     boost::asio::signal_set signal_set(io_context, SIGINT, SIGTERM);
     signal_set.async_wait([&](auto ec, auto signal) {
@@ -39,7 +41,7 @@ int main(int argc, char** argv) {
             io_context.run();
         });
     }
-    std::cerr << "Started on port " << port << "\n";
+    std::cerr << "Started on port " << options.port << "\n";
     std::cerr << "Press Ctrl+C to terminate\n";
 
     return 0;
