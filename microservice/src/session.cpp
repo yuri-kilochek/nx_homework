@@ -40,7 +40,7 @@ struct session::impl {
     impl(boost::asio::ip::tcp::socket&& socket)
     : strand(socket.get_executor())
     , socket(std::move(socket))
-    {}
+    { this->socket.set_option(boost::asio::ip::tcp::no_delay{true}); }
 
     void start_reading(std::shared_ptr<impl> self) {
         in_buffer.resize(16 * 1024); // 16KiB
