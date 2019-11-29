@@ -1,4 +1,4 @@
-#include <nx/homework/hasher/microservice/options.hpp>
+#include <nx_homework/hasher_microservice/options.hpp>
 
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/variables_map.hpp>
@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <iostream>
 
-namespace nx::homework::hasher::microservice {
+namespace nx_homework::hasher_microservice {
 ///////////////////////////////////////////////////////////////////////////////
 
 options::options(int argc, char const* const* argv) {

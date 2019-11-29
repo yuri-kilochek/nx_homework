@@ -1,7 +1,7 @@
-#ifndef NX_HOMEWORK_HASHER_MICROSERVICE_DETAIL_INCLUDE_GUARD_NX_HOMEWORK_HASHER_MICROSERVICE_HEX_ENCODE
-#define NX_HOMEWORK_HASHER_MICROSERVICE_DETAIL_INCLUDE_GUARD_NX_HOMEWORK_HASHER_MICROSERVICE_HEX_ENCODE
+#ifndef NX_HOMEWORK_HASHER_MICROSERVICE_HEX_ENCODE_INCLUDED
+#define NX_HOMEWORK_HASHER_MICROSERVICE_HEX_ENCODE_INCLUDED
 
-namespace nx::homework::hasher::microservice {
+namespace nx_homework::hasher_microservice {
 ///////////////////////////////////////////////////////////////////////////////
 
 template <typename InputIt, typename OutputIt>

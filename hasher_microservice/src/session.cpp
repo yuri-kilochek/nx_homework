@@ -1,6 +1,7 @@
-#include <nx/homework/hasher/microservice/session.hpp>
-#include <nx/homework/hasher/microservice/hex_encode.hpp>
-#include <nx/homework/hasher/hasher.hpp>
+#include <nx_homework/hasher_microservice/session.hpp>
+#include <nx_homework/hasher_microservice/hex_encode.hpp>
+
+#include <nx_homework/hasher.hpp>
 
 #include <boost/system/system_error.hpp>
 #include <boost/asio/strand.hpp>
@@ -15,7 +16,7 @@
 #include <algorithm>
 #include <iterator>
 
-namespace nx::homework::hasher::microservice {
+namespace nx_homework::hasher_microservice {
 ///////////////////////////////////////////////////////////////////////////////
 
 struct session::impl {
@@ -27,7 +28,7 @@ struct session::impl {
 
     bool is_hashing = false;
     std::vector<char> hash_in_buffer;
-    homework::hasher::hasher hasher;
+    nx_homework::hasher hasher;
     std::vector<char> hash_out_buffer;
     std::vector<char> digest;
 

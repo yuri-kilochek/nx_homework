@@ -1,7 +1,7 @@
-#ifndef NX_HOMEWORK_HASHER_MICROSERVICE_DETAIL_INCLUDE_GUARD_NX_HOMEWORK_HASHER_MICROSERVICE_SESSION
-#define NX_HOMEWORK_HASHER_MICROSERVICE_DETAIL_INCLUDE_GUARD_NX_HOMEWORK_HASHER_MICROSERVICE_SESSION
+#ifndef NX_HOMEWORK_HASHER_MICROSERVICE_SESSION_INCLUDED
+#define NX_HOMEWORK_HASHER_MICROSERVICE_SESSION_INCLUDED
 
-#include <nx/homework/hasher/microservice/any_handler.hpp>
+#include <nx_homework/hasher_microservice/any_handler.hpp>
 
 #include <boost/system/error_code.hpp>
 #include <boost/asio/ip/tcp.hpp>
@@ -10,7 +10,7 @@
 #include <utility>
 #include <memory>
 
-namespace nx::homework::hasher::microservice {
+namespace nx_homework::hasher_microservice {
 ///////////////////////////////////////////////////////////////////////////////
 
 struct session {

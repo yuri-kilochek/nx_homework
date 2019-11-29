@@ -1,5 +1,5 @@
-#include <nx/homework/hasher/microservice/server.hpp>
-#include <nx/homework/hasher/microservice/session.hpp>
+#include <nx_homework/hasher_microservice/server.hpp>
+#include <nx_homework/hasher_microservice/session.hpp>
 
 #include <boost/system/system_error.hpp>
 #include <boost/asio/strand.hpp>
@@ -12,7 +12,7 @@
 #include <list>
 #include <iterator>
 
-namespace nx::homework::hasher::microservice {
+namespace nx_homework::hasher_microservice {
 ///////////////////////////////////////////////////////////////////////////////
 
 struct server::impl {

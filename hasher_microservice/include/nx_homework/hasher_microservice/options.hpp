@@ -1,9 +1,9 @@
-#ifndef NX_HOMEWORK_HASHER_MICROSERVICE_DETAIL_INCLUDE_GUARD_NX_HOMEWORK_HASHER_MICROSERVICE_OPTIONS
-#define NX_HOMEWORK_HASHER_MICROSERVICE_DETAIL_INCLUDE_GUARD_NX_HOMEWORK_HASHER_MICROSERVICE_OPTIONS
+#ifndef NX_HOMEWORK_HASHER_MICROSERVICE_OPTIONS_INCLUDED
+#define NX_HOMEWORK_HASHER_MICROSERVICE_OPTIONS_INCLUDED
 
 #include <cstdint>
 
-namespace nx::homework::hasher::microservice {
+namespace nx_homework::hasher_microservice {
 ///////////////////////////////////////////////////////////////////////////////
 
 struct options {

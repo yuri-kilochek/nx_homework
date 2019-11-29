@@ -1,16 +1,16 @@
-#ifndef NX_HOMEWORK_HASHER_DETAIL_INCLUDE_GUARD_NX_HOMEWORK_HASHER_HASHER
-#define NX_HOMEWORK_HASHER_DETAIL_INCLUDE_GUARD_NX_HOMEWORK_HASHER_HASHER
+#ifndef NX_HOMEWORK_HASHER_INCLUDED
+#define NX_HOMEWORK_HASHER_INCLUDED
 
-#include <nx/homework/hasher/api.hpp>
+#include <nx_homework/hasher/detail/api.hpp>
 
 #include <cstddef>
 #include <vector>
 #include <memory>
 
-namespace nx::homework::hasher {
+namespace nx_homework {
 ///////////////////////////////////////////////////////////////////////////////
 
-struct NX_HOMEWORK_HASHER_API hasher {
+struct NX_HOMEWORK_HASHER_DETAIL_API hasher {
     hasher();
 
     ~hasher();

@@ -1,5 +1,5 @@
-#ifndef NX_HOMEWORK_HASHER_MICROSERVICE_DETAIL_INCLUDE_GUARD_NX_HOMEWORK_HASHER_MICROSERVICE_ANY_HANDLER
-#define NX_HOMEWORK_HASHER_MICROSERVICE_DETAIL_INCLUDE_GUARD_NX_HOMEWORK_HASHER_MICROSERVICE_ANY_HANDLER
+#ifndef NX_HOMEWORK_HASHER_MICROSERVICE_ANY_HANDLER_INCLUDED
+#define NX_HOMEWORK_HASHER_MICROSERVICE_ANY_HANDLER_INCLUDED
 
 #include <boost/asio/executor.hpp>
 #include <boost/asio/associated_executor.hpp>
@@ -7,7 +7,7 @@
 #include <utility>
 #include <memory>
 
-namespace nx::homework::hasher::microservice {
+namespace nx_homework::hasher_microservice {
 ///////////////////////////////////////////////////////////////////////////////
 
 template <typename... Args>

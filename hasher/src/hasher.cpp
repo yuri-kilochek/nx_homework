@@ -1,10 +1,10 @@
-#include <nx/homework/hasher/hasher.hpp>
+#include <nx_homework/hasher.hpp>
 
 #include <nettle/sha2.h>
 
 #include <cstdint>
 
-namespace nx::homework::hasher {
+namespace nx_homework {
 ///////////////////////////////////////////////////////////////////////////////
 
 struct hasher::impl {

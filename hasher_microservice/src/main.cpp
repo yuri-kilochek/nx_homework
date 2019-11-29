@@ -1,5 +1,5 @@
-#include <nx/homework/hasher/microservice/options.hpp>
-#include <nx/homework/hasher/microservice/server.hpp>
+#include <nx_homework/hasher_microservice/options.hpp>
+#include <nx_homework/hasher_microservice/server.hpp>
 
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/signal_set.hpp>
@@ -7,18 +7,22 @@
 #include <boost/scope_exit.hpp>
 
 #include <cstddef>
+#include <csignal>
 #include <thread>
 #include <iostream>
 
-namespace nx::homework::hasher::microservice {
+namespace nx_homework::hasher_microservice {
 ///////////////////////////////////////////////////////////////////////////////
 
-int main(int argc, char const* const* argv) {
-    microservice::options options(argc, argv);
+static
+auto main(int argc, char const* const* argv)
+-> int
+{
+    hasher_microservice::options options(argc, argv);
 
     boost::asio::io_context io_context;
 
-    microservice::server server(io_context, options.port);
+    hasher_microservice::server server(io_context, options.port);
 
     boost::asio::signal_set signal_set(io_context, SIGINT, SIGTERM);
     signal_set.async_wait([&](auto ec, auto signal) {
@@ -51,5 +55,5 @@ int main(int argc, char const* const* argv) {
 }
 
 int main(int argc, char* argv[]) {
-    return nx::homework::hasher::microservice::main(argc, argv);
+    return nx_homework::hasher_microservice::main(argc, argv);
 }
