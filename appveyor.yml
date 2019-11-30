@@ -1,0 +1,25 @@
+version: 1.0.0.{build}
+image: Visual Studio 2019
+
+platform:
+- x64
+
+install:
+- cmd: set PATH=%PATH%;%PYTHON%/Scripts/
+- cmd: pip.exe install conan
+- cmd: conan user
+
+build_script:
+- cmd: mkdir build
+- cmd: cd build
+- cmd: conan install .. --build=missing
+- cmd: cmake -G Ninja ..
+- cmd: cmake --build .
+
+test_script:
+- cmd: cd build
+- cmd: ctest
+
+cache:
+- build
+- '%UserProfile%/.conan'
