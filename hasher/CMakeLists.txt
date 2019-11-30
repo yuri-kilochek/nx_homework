@@ -46,3 +46,6 @@ export(EXPORT hasher
     NAMESPACE nx_homework_
     FILE nx_homework_hasher-config.cmake
 )
+
+
+add_subdirectory(tests)
