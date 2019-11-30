@@ -28,20 +28,21 @@ struct session {
 
     void terminate();
 
-    template <typename CompletionToken>
-    auto async_wait(CompletionToken&& token) {
-        return boost::asio::async_initiate<
-            CompletionToken, void(boost::system::error_code)>(
-                [this](auto&& handler) {
-                    async_wait_impl(std::forward<decltype(handler)>(handler));
-                }, token);
+    template <typename WaitCompletionToken>
+    auto async_wait(WaitCompletionToken&& token) {
+        using signature_type = void(boost::system::error_code const&);
+        return boost::asio::async_initiate<WaitCompletionToken, signature_type>(
+            [this](auto&& handler) {
+                async_wait_impl(std::forward<decltype(handler)>(handler));
+            }, token);
     }
 
 private:
     struct impl;
     std::shared_ptr<impl> impl_;
 
-    void async_wait_impl(any_handler<boost::system::error_code> handler);
+    void async_wait_impl(
+        any_handler<boost::system::error_code const&>&& handler);
 };
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -59,7 +59,7 @@ struct session::impl {
                 if (ec == boost::asio::error::connection_reset
                  || ec == boost::asio::error::eof)
                 {
-                    complete_async_wait({});
+                    complete_wait({});
                     socket.close();
                     return;
                 }
@@ -119,7 +119,7 @@ struct session::impl {
                 if (ec == boost::asio::error::connection_reset
                  || ec == boost::asio::error::eof)
                 {
-                    complete_async_wait({});
+                    complete_wait({});
                     socket.close();
                     return;
                 }
@@ -168,16 +168,16 @@ struct session::impl {
     }
 
     void terminate() {
-        complete_async_wait(boost::asio::error::operation_aborted);
+        complete_wait(boost::asio::error::operation_aborted);
         socket.close();
     }
 
     void async_wait(any_handler<boost::system::error_code>&& handler) {
-        complete_async_wait(boost::asio::error::operation_aborted);
+        complete_wait(boost::asio::error::operation_aborted);
         wait_handler = std::move(handler);
     }
 
-    void complete_async_wait(boost::system::error_code ec) {
+    void complete_wait(boost::system::error_code const& ec) {
         if (!wait_handler) { return; }
         auto executor = wait_handler.get_executor();
         post(executor, [wait_handler = std::move(wait_handler), ec]() mutable {
@@ -200,10 +200,13 @@ void session::terminate() {
     });
 }
 
-void session::async_wait_impl(any_handler<boost::system::error_code> handler) {
+void session::async_wait_impl(
+    any_handler<boost::system::error_code const&>&& handler)
+{
     dispatch(impl_->strand, [
-        impl_ = impl_, handler = std::move(handler)
-    ]() mutable{
+        impl_ = impl_,
+        handler = std::move(handler)
+    ]() mutable {
         impl_->async_wait(std::move(handler));
     });
 }
