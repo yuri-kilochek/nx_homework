@@ -5,22 +5,30 @@ platform:
 - x64
 
 install:
-- cmd: choco install ninja
+- cmd: mkdir ninja
+- cmd: cd ninja
+- cmd: curl -L -o ninja.zip https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-win.zip
+- cmd: 7z e ninja.zip
+- cmd: set PATH=%cd%;%PATH%
+- cmd: cd ..
+
 - cmd: set PATH=%PATH%;%PYTHON%/Scripts/
 - cmd: pip.exe install conan
 - cmd: conan user
 
 build_script:
-- cmd: mkdir -p build
+- cmd: if not exist build mkdir build
 - cmd: cd build
-- cmd: 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat"'
+- cmd: call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Auxiliary/Build/vcvars64.bat"
 - cmd: conan install .. --build=missing
-- cmd: cmake -G Ninja ..
+- cmd: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../install -G Ninja ..
 - cmd: cmake --build .
+- cmd: cmake --install .
 
 test_script:
-- cmd: cd build
 - cmd: ctest
+- cmd: cd ../install
+- cmd: bin\nx_homework_hasher_microservice --version
 
 cache:
 - build

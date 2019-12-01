@@ -23,9 +23,9 @@ struct any_handler {
             : handler_(std::forward<Handler>(handler))
             {}
 
-            auto get_executor()
+            // WORKAROUND: MSVC: doesn't grok trailing return tyoe here
+            boost::asio::executor get_executor()
             const
-            -> boost::asio::executor
             override
             { return boost::asio::get_associated_executor(handler_); }
 

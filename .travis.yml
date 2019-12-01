@@ -24,9 +24,13 @@ script:
 - mkdir -p build
 - cd build
 - conan install .. --build=missing
-- cmake -G Ninja ..
+- cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../install -G Ninja ..
 - cmake --build .
+- cmake --install .
+
 - ctest
+- cd ../install
+- bin/nx_homework_hasher_microservice --version
 
 cache:
     directories:

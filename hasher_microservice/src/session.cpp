@@ -81,11 +81,13 @@ struct session::impl {
             while (true) {
                 auto end = std::find(begin, hash_in_buffer.end(), u8'\n');
 
-                hasher.append(&*begin, end - begin);
+                // WORKAROUND: MSVC: spurious syntax error without `this->`
+                this->hasher.append(&*begin, end - begin);
 
                 if (end == hash_in_buffer.end()) { break; }
 
-                hasher.finish(digest);
+                // WORKAROUND: MSVC: spurious syntax error without `this->`
+                this->hasher.finish(digest);
 
                 hex_encode(digest.begin(), digest.end(),
                            std::back_inserter(hash_out_buffer));
