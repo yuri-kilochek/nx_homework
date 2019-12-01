@@ -5,13 +5,15 @@ platform:
 - x64
 
 install:
+- cmd: choco install ninja
 - cmd: set PATH=%PATH%;%PYTHON%/Scripts/
 - cmd: pip.exe install conan
 - cmd: conan user
 
 build_script:
-- cmd: mkdir build
+- cmd: mkdir -p build
 - cmd: cd build
+- cmd: 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat"'
 - cmd: conan install .. --build=missing
 - cmd: cmake -G Ninja ..
 - cmd: cmake --build .

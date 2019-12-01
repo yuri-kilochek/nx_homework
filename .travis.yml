@@ -10,9 +10,10 @@ install:
 - sudo apt-get install -qq g++-9
 - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9
 
-- sudo apt remove --purge --auto-remove cmake
 - wget https://github.com/Kitware/CMake/releases/download/v3.16.0/cmake-3.16.0-Linux-x86_64.sh -O cmake.sh
-- sudo sh cmake.sh --skip-license --prefix=/usr
+- mkdir cmake_alt
+- sudo sh cmake.sh --skip-license --prefix=./cmake_alt
+- export PATH="$(pwd)/cmake_alt/bin:$PATH"
 
 - sudo apt-get install -qq ninja-build
 
@@ -20,7 +21,7 @@ install:
 - conan user
 
 script:
-- mkdir build
+- mkdir -p build
 - cd build
 - conan install .. --build=missing
 - cmake -G Ninja ..
