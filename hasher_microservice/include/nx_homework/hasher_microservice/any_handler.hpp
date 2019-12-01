@@ -23,7 +23,7 @@ struct any_handler {
             : handler_(std::forward<Handler>(handler))
             {}
 
-            // WORKAROUND: MSVC: doesn't grok trailing return tyoe here
+            // WORKAROUND: MSVC: doesn't grok trailing return type here
             boost::asio::executor get_executor()
             const
             override
