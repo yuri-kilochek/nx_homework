@@ -1,30 +1,40 @@
 #include <nx_homework/hasher.hpp>
 
-#include <nettle/sha2.h>
+#include <sodium.h>
 
-#include <cstdint>
+#include <stdexcept>
 
 namespace nx_homework {
 ///////////////////////////////////////////////////////////////////////////////
 
 struct hasher::impl {
-    sha256_ctx ctx;
+    crypto_hash_sha256_state state;
 };
 
 hasher::hasher()
 : impl_(std::make_unique<impl>())
-{ sha256_init(&impl_->ctx); }
+{
+    static
+    int const dummy = []{
+        if (sodium_init() < 0) {
+            throw std::runtime_error("sodium_init() failed");
+        }
+        return 0;
+    }();
+    crypto_hash_sha256_init(&impl_->state);
+}
 
 hasher::~hasher() = default;
 
 void hasher::append(void const* data, std::size_t size) {
-    sha256_update(&impl_->ctx, size, static_cast<std::uint8_t const*>(data));
+    crypto_hash_sha256_update(&impl_->state,
+                              static_cast<unsigned char const*>(data), size);
 }
 
 void hasher::finish(std::vector<char>& digest) {
-    digest.resize(SHA256_DIGEST_SIZE);
-    sha256_digest(&impl_->ctx, digest.size(),
-                               reinterpret_cast<std::uint8_t*>(digest.data()));
+    digest.resize(crypto_hash_sha256_BYTES);
+    crypto_hash_sha256_final(&impl_->state,
+                             reinterpret_cast<unsigned char*>(digest.data()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

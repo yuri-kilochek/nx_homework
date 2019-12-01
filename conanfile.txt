@@ -1,6 +1,6 @@
 [requires]
 boost/1.71.0@conan/stable
-nettle/3.4.1@bincrafters/stable
+libsodium/1.0.18@bincrafters/stable
 
 [build_requires]
 catch2/2.9.2

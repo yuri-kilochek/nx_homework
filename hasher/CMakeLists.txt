@@ -22,7 +22,7 @@ target_sources(hasher PRIVATE
 
 target_link_libraries(hasher PUBLIC
     CONAN_PKG::boost
-    CONAN_PKG::nettle
+    CONAN_PKG::libsodium
 )
 
 
